@@ -8,10 +8,13 @@ require_once('../config/db.php');
 foreach (glob("../models/*.class.php") as $filename) {
     include_once($filename);
 }
+include_once("../helper/img-upload-helper.php");
 
-header("Access-Control-Allow-Origin: http://localhost:5174");
-header("Access-Control-Allow-Methods: GET");
-header("Access-Control-Allow-Methods: Content-Type");
+header("Access-Control-Allow-Origin: *");
+
+// header("Access-Control-Allow-Origin: http://localhost:5174");
+// header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers:*");
 // include_once('product-api.php');
 // include_once('order-api.php');
 // OR
@@ -19,12 +22,13 @@ foreach(glob("*-api.php") as $filename) {
     include_once($filename);
 }
 $request = $_SERVER['REQUEST_METHOD'];
+$endpoint = $_GET['method'] ?? null;
 
-if(isset($_GET['method'])) {
+if($endpoint) {
     $method = $_GET['method'];
     // echo $method;
     if($method == 'roles') {
-        echo "API is working - Roles List";
+        // echo "API is working - Roles List";
         getRoles();
         // getProducts();
     }elseif($method == 'create-roles' && $request == 'POST'){
@@ -32,26 +36,16 @@ if(isset($_GET['method'])) {
          // echo "APi Working- users List";
         $data =json_decode(file_get_contents("php://input"),true);
         echo json_encode($_POST);
-    }elseif($method == 'users'){
-       
+    }elseif($method == 'users' && $request == 'GET'){
+       getUsers();
+    }elseif($method == 'create-user' && $request == 'POST'){
+    //    echo json_encode($_POST);
+    //    echo json_encode($_FILES);
+            createUsers($_POST, $_FILES);
     }else{
         echo "This user '$method' not found!";
     }
-    // }elseif($method == 'product' && isset($_GET['id'])) {
-    //     $id = $_GET['id'];
-    //     getProductById($id);
-    // }elseif($method == 'product-category' && isset($_GET['id'])) {
-    //     $id = $_GET['id'];
-    //     getProductByCategory($id);
-    // }elseif($method == 'orders') {
-    //     if(isset($_GET['pg'])) {
-    //         $page = $_GET['pg'];
-    //         getOrdersByPage($page);
-    //     }else {
-    //         getOrdersByPage(1);
-    //     }
-        // getOrdersByPage();
-    // }
+    
 }
 
 ?>
