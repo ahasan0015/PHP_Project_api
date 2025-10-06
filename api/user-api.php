@@ -18,5 +18,8 @@ function createUsers($data, $files){
     $user = new Users(null, $data["name"], $data["email"], "", $data["role_id"], $data["address"], $photo);
     echo json_encode($user->create());
 }
+function deleteUser($id){
+    echo json_encode(Users::delete($id));
+}
 
 ?>
