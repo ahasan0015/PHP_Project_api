@@ -1,6 +1,6 @@
 <?php
 return [
-    'secret_key_jwt' => 'hisecrect',
+    'secret_key_jwt' => 'hithisisreact',
 ]
 
 
