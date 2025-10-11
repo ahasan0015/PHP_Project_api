@@ -21,5 +21,8 @@ function createUsers($data, $files){
 function deleteUser($id){
     echo json_encode(Users::delete($id));
 }
+function login($data){
+    echo json_encode(Users::login($data['email'], $data['password']));
+}
 
 ?>
